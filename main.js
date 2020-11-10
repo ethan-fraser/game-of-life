@@ -78,10 +78,12 @@ class Game {
       this.mouseY = event.pageY - this.canvas.offsetTop;
     }
     document.addEventListener("click", () => this.toggleCell());
-    this.speedSlider.oninput = () => {
-      clearInterval(this.updateInterval);
-      this.updateInterval = setInterval(() => this.update(), this.speedSlider.value);
-    }
+    this.speedSlider.addEventListener("input", () => {
+      if (this.nextButton.disabled){
+        clearInterval(this.updateInterval);
+        this.updateInterval = setInterval(() => this.update(), this.speedSlider.value);
+      }
+    })
 
     this.update();
     this.stop();
@@ -109,6 +111,7 @@ class Game {
         this.cells[i].state = !this.cells[i].state;
       }
     }
+    this.clearCanvas();
     this.drawCells();
     this.drawGrid();
   }
@@ -188,7 +191,6 @@ class Game {
   }
 
   update(){
-    this.clearCanvas();
     // get array of new cell states
     var newCellStates = [];
     for (var i = 0; i < this.cells.length; i++){
@@ -197,6 +199,7 @@ class Game {
     for (var i = 0; i < this.cells.length; i++){
       this.cells[i].state = newCellStates[i];
     }
+    this.clearCanvas();
     this.drawCells();
     this.drawGrid();
   }
