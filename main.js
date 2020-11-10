@@ -1,4 +1,3 @@
-
 class Cell {
   
   constructor(x, y){
@@ -34,7 +33,7 @@ class Game {
     this.cellSize = canvasSize / gridSize;
 
     // start button
-   this.startButton = document.createElement("input");
+    this.startButton = document.createElement("input");
     this.startButton.type = "submit";
     this.startButton.value = "Start";
     this.startButton.onclick = () => this.start();
@@ -79,6 +78,10 @@ class Game {
       this.mouseY = event.pageY - this.canvas.offsetTop;
     }
     document.addEventListener("click", () => this.toggleCell());
+    this.speedSlider.oninput = () => {
+      clearInterval(this.updateInterval);
+      this.updateInterval = setInterval(() => this.update(), this.speedSlider.value);
+    }
 
     this.update();
     this.stop();
@@ -202,5 +205,5 @@ class Game {
 
 
 console.log("Conway's Game of Life")
-game = new Game(500, 25);
+let game = new Game(500, 25);
  
